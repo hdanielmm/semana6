@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Popular Movies</title>
+
+  <link rel="stylesheet" href="src/style.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.4.0/handlebars.js"></script>
+  <script src="https://kit.fontawesome.com/8fa18d9ab6.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div class="chat-box d-flex flex-row">
+    <div class="chat-list rounded-left">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item bg-light border">
+          <h5 class="m-0">Tus Salas</h5>
+        </li>
+      </ul>
+
+      <div class="p-3">
+        <input id="room-input" type="text" class="form-control">
+        <button id="room-button" class="btn btn-primary btn-block mt-2">Crear</button>
+      </div>
+    </div>
+
+    <div class="chat-container flex-fill border rounded-right">
+      <div class="select-chat d-flex justify-content-center align-items-center h-100 w-100">
+        <h2 class="text-muted">Selecciona un chat</h2>
+      </div>
+      <div class="chat d-flex flex-column bg-white rounded">
+        <div class="chat-body flex-fill d-flex flex-column-reverse">
+        </div>
+
+        <div class="chat-footer input-group border-top mt-auto p-3">
+          <input id="comment-input" type="text" class="form-control border-right-0">
+          <div class="input-group-append">
+            <span id="btn-send" class="send-btn input-group-text bg-white border-left-0"><i
+                class="far fa-paper-plane"></i></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <h4 class="mb-3">Ingresar</h4>
+
+          <input id="email" class="form-control mb-3" type="email" placeholder="Email">
+          <input id="password" class="form-control" type="password" placeholder="Contraseña">
+        </div>
+        <div class="modal-footer">
+          <button id="login-btn" type="button" class="btn btn-primary">Ingresar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script id="message-template" type="text/x-handlebars-template">
+    <div class="comment border-top">
+      <div class="px-4 py-2">
+        <p class="mb-1">{{message}}</p>
+        <p class="text-right text-muted small mb-1">Por {{sender}}</p>
+      </div>
+    </div>
+  </script>
+
+  <script id="room-template" type="text/x-handlebars-template">
+    <li id="{{id}}" class="room list-group-item bg-dark text-white border-bottom border-white">
+      {{name}}
+    </li>
+  </script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-app.js"></script>
+  <script src = "https://www.gstatic.com/firebasejs/6.5.0/firebase-auth.js"> </script>
+  <script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-firestore.js"></script>
+
+  <script src="src/app.js"></script>
+</body>
+
+</html>
