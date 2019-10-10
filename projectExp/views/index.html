@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>To Do List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.4.0/handlebars.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <title>To Do List</title>
+</head>
+
+<body>
+  <h1>Este es el archivo HTML</h1>
+  <button>Crear mensaje</button>
+
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="card m-3" style="max-width: 18rem;">
+          <ul class="card-body">
+            <h5 class="card-title">To do List</h5>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+              </div>
+              <input type="text" class="form-control" placeholder="Add new task" aria-label="Username"
+                aria-describedby="basic-addon1">
+            </div>
+            <ul class="tasks">
+
+            </ul>
+            <!-- <div id="tasks"></div>
+                      <script id="task" type="text/x-handlebars-template">
+                          <p class="card-text">{{task}}</p>
+                      </script> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div>
+  <style>
+    input:focus {
+      background: #fff;
+      border: 3px solid #2980b9;
+      outline: none;
+    }
+
+    ul{
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    span {
+      background: #e74c3c;
+      height: 40px;
+      margin-right: 20px;
+      text-align: center;
+      color: white;
+      width: 0px;
+      display: inline-block;
+      transition: 0.2s linear;
+      opacity: 0;
+    }
+
+    li{
+      background: #fff;
+      height: 40px;
+      line-height: 40px;
+      color: #666;
+      cursor: pointer;
+    }
+
+    li:nth-child(2n){
+      background: #f7f7f7;
+    }
+
+    #container{
+      /* background: gray; */
+      width: 360px;
+      margin: 100px auto;
+      /* border: 2px solid gray; */
+      background: #f7f7f7;
+      box-shadow: 0 0 rgba(0, 0, 0, 0.1);
+    }
+
+.completed{
+      color: gray;
+      text-decoration: line-through;
+    }
+.fa-plus{
+      float: right;
+    }
+
+    li:hover span{
+      width: 40px;
+      opacity: 1.0;
+    }
+  </style>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+  <script>
+    const _get = () => {
+      $.ajax({
+        type: "GET",
+        url: "http://localhost:3000/tasks",
+        headers: { "Content-Type": "application/json" },
+      }).done(function (data) {
+        data.forEach(element => {          
+          task(element);
+        })
+
+      });
+    }
+
+    const _post = (value) => {
+      console.log(value);
+      $.ajax({
+        type: "POST",
+        url: "http://localhost:3000/tasks",
+        headers: { "Content-Type": "application/json" },
+        data: JSON.stringify({ "task": value }),
+      }).done(function (data) {
+        task(data);
+      });
+    }
+
+    const _delete = (id) => {
+      $.ajax({
+        type: "DELETE",
+        url: "http://localhost:3000/tasks/" + id,
+        headers: { "Content-Type": "application/json" }
+      }).done(function (data) {
+        console.log(data);
+        console.log('Deleted');
+      });
+    }
+
+    const _put = (task, id) => {
+      console.log('en el Put Data', task);
+      console.log('en el Put ID', id);
+      $.ajax({
+        type: "PATCH",
+        url: "http://localhost:3000/tasks",
+        headers: { "Content-Type": "application/json" },
+        data: JSON.stringify(task)
+      }).done(function (data) {
+        console.log('Data Updated');
+      });
+    }
+
+    const task = (input) => {
+      return $('.tasks').append(`<li class="  d-flex justify-content-between  card-text task" id="${input.id}"><span class='delete'><i class="fa fa-trash"></i></span> ${input.task} <span class="edit"><i class="fa fa-pencil "></i></span></li>`)
+    }
+
+    const onInputKeypress = function (e) {
+      if (e.which == 13) {
+        _post($(this).val());
+        $(this).val('')
+      }
+    }
+
+    const onDelete = function (e) {
+      const id = parseInt($(".task").attr('id'));
+      console.log("id",id);
+      
+      $(this).parent().remove();
+      _delete(id)
+      event.stopPropagation();
+    }
+
+    const onToggleDone = function (e) {
+      const id = parseInt($('.task').attr('id'));
+      $(e.currentTarget).toggleClass("completed");
+      if ($(e.currentTarget).hasClass('completed')) {
+        state({ 'id': id, 'done': true })
+      } else {
+        state({ 'id': id, 'done': false })
+      }
+      event.stopPropagation();
+    }
+
+    const onClickEdit = function (e) {
+      const id = $(this).parent().attr('id')
+      const text = $(this).parent().text();
+      $(this).parent().replaceWith('<input type="text" id="' + id + '" class="form-control editText" placeholder="Add new task" value="' + text + '" aria-label="Username" aria-describedby="basic-addon1">')
+      console.log('Esto es ID' + id);
+      event.stopPropagation();
+    }
+
+    const onClickEditText = function (e) {
+      if (e.which == 13) {
+        const id = parseInt($(this).attr('id'));
+        const text = $(this).val();
+        console.log('se MANDA AQUI ');
+        state({ 'id': id, 'title': text });
+        $(this).replaceWith(`<li class=" d-flex justify-content-between card-text task" id="${id}"><span class='delete'><i class="fa fa-trash"></i></span>${text}<span class="edit"><i class="fa fa-pencil "></i></span></li>`)
+
+      }
+      e.stopPropagation();
+    }
+
+    $("input").on('keypress', onInputKeypress);
+    $('ul').on('click', '.delete', 'i', onDelete);
+    $('ul').on('click', 'li', onToggleDone);
+    $('ul').on('click', '.edit', onClickEdit);
+    $("ul").on('keypress', '.editText', onClickEditText);
+
+    const state = (data) => {
+      _put(data, data.id);
+    }
+
+    _get()
+
+  </script>
+
+
+
+  <script type="text/javascript">
+    // llamados AJAX al servidor
+    // Single Page Applications (SPA's)
+
+    fetch("/tasks")
+      .then(response => response.json())
+      .then(data => console.log(data));
+
+    
+  </script>
+  
+</body>
+
+</html>
