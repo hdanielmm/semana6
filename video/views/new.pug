@@ -1,0 +1,12 @@
+extends layout
+block content
+  form(action="/notes", method="post")
+    div
+      div
+        label(for="title") Title
+      input(type="text", id="title" name="title")
+    div
+      div
+        label(for="body") Text
+      textarea(id="body" name="body", rows="10")
+    button(type="submit") Send

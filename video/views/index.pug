@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  a(href="/notes/new") New note
+  each note in notes
+    div
+      h3 #{note._id} - #{note.title}
+      p= note.body
+
+  form(action="/notes2", method="post")
+    button(type="submit", name="new") Go to new
